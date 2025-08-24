@@ -4,12 +4,12 @@ import joblib
 
 # --- Load Your Trained Model and Preprocessor ---
 # Make sure the paths are correct if you place them in a subfolder
-try:
-    model = joblib.load('knn_churn_model.joblib')
-    preprocessor = joblib.load('preprocessor.joblib')
-except FileNotFoundError:
-    st.error("Model or preprocessor file not found. Please make sure 'knn_churn_model.joblib' and 'preprocessor.joblib' are in the same directory.")
-    st.stop()
+#try:
+#    model = joblib.load('knn_churn_model.joblib')
+#    preprocessor = joblib.load('preprocessor.joblib')
+#except FileNotFoundError:
+#    st.error("Model or preprocessor file not found. Please make sure #'knn_churn_model.joblib' and 'preprocessor.joblib' are in the same directory.")
+#    st.stop()
 
 # --- Streamlit App Interface ---
 st.title("Bank Customer Churn Prediction")
