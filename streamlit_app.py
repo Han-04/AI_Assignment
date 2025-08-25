@@ -10,11 +10,11 @@ model_choice = st.sidebar.selectbox("Choose a Model", ["ANN", "SVM", "KNN"])
 # --- Load the selected model and the preprocessor ---
 try:
     if model_choice == "ANN":
-        model = joblib.load('saved_models/ann_model.joblib')
+        model = joblib.load('ann_model.joblib')
     elif model_choice == "SVM":
-        model = joblib.load('saved_models/svm_model.joblib')
+        model = joblib.load('svm_model.joblib')
     else: # Default to KNN
-        model = joblib.load('saved_models/knn_model.joblib')
+        model = joblib.load('knn_model.joblib')
     
     preprocessor = joblib.load('saved_models/preprocessor.joblib')
 
