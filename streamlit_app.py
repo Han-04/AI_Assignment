@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-st.title("Bank Customer Churn Prediction")
-
 # --- Let the user choose the model ---
 model_choice = st.sidebar.selectbox("Choose a Model", ["ANN", "SVM", "KNN"])
 
