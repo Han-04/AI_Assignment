@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
+from tensorflow.keras.models import load_model
 
 # --- Let the user choose the model ---
 model_choice = st.sidebar.selectbox("Choose a Model", ["ANN", "SVM", "KNN"])
@@ -8,7 +9,7 @@ model_choice = st.sidebar.selectbox("Choose a Model", ["ANN", "SVM", "KNN"])
 # --- Load the selected model and the preprocessor ---
 try:
     if model_choice == "ANN":
-        model = joblib.load('ann_churn_model.joblib')
+        model = load_model('ann_churn_model.h5')
     elif model_choice == "SVM":
         model = joblib.load('svm_churn_model.joblib')
     else: # Default to KNN
@@ -55,15 +56,31 @@ if st.sidebar.button("Predict"):
     processed_input = preprocessor.transform(input_df)
 
     # Make the prediction
-    prediction = model.predict(processed_input)
-    prediction_proba = model.predict_proba(processed_input)
+    if model_choice == "ANN":
+        # Keras .predict() returns the probability of the positive class (churn)
+        prediction_proba = model.predict(processed_input)[0][0]
+        # Convert the probability into a binary class label (0 or 1)
+        prediction = 1 if prediction_proba > 0.5 else 0
+        
+        # Assign probabilities for display
+        prob_churn = prediction_proba
+        prob_retain = 1 - prediction_proba
+    else:
+        # Scikit-learn .predict() returns the class label directly
+        prediction = model.predict(processed_input)[0]
+        # .predict_proba() returns probabilities for both classes
+        prediction_proba = model.predict_proba(processed_input)[0]
 
-    # --- Display the Prediction ---
-    st.subheader("Prediction Result")
+        # Assign probabilities for display
+        prob_churn = prediction_proba[1] # Probability of churn (class 1)
+        prob_retain = prediction_proba[0] # Probability of retention (class 0)
 
-    if prediction[0] == 1:
+    # --- Display the Prediction (This part is now universal) ---
+    st.subheader(f"Prediction Result (using {model_choice} model)")
+
+    if prediction == 1:
         st.error("This customer is likely to CHURN.")
-        st.write(f"Confidence: {prediction_proba[0][1]*100:.2f}%")
+        st.write(f"Confidence (Churn Probability): {prob_churn*100:.2f}%")
     else:
         st.success("This customer is likely to be RETAINED.")
-        st.write(f"Confidence: {prediction_proba[0][0]*100:.2f}%")
+        st.write(f"Confidence (Retention Probability): {prob_retain*100:.2f}%")
