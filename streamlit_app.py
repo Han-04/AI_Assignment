@@ -16,7 +16,7 @@ try:
     else: # Default to KNN
         model = joblib.load('knn_model.joblib')
     
-    preprocessor = joblib.load('saved_models/preprocessor.joblib')
+    preprocessor = joblib.load('preprocessor.joblib')
 
 except FileNotFoundError:
     st.error("Model or preprocessor file not found. Make sure the 'saved_models' directory is present.")
