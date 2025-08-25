@@ -10,16 +10,16 @@ model_choice = st.sidebar.selectbox("Choose a Model", ["ANN", "SVM", "KNN"])
 # --- Load the selected model and the preprocessor ---
 try:
     if model_choice == "ANN":
-        model = joblib.load('ann_model.joblib')
+        model = joblib.load('ann_churn_model.joblib')
     elif model_choice == "SVM":
-        model = joblib.load('svm_model.joblib')
+        model = joblib.load('svm_churn_model.joblib')
     else: # Default to KNN
-        model = joblib.load('knn_model.joblib')
+        model = joblib.load('knn_churn_model.joblib')
     
     preprocessor = joblib.load('preprocessor.joblib')
 
 except FileNotFoundError:
-    st.error("Model or preprocessor file not found. Make sure the 'saved_models' directory is present.")
+    st.error("Model or preprocessor file not found.")
     st.stop()
 
 # --- Streamlit App Interface ---
