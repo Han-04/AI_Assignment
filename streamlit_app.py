@@ -2,13 +2,24 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# --- Load Your Trained Model and Preprocessor ---
-#Make sure the paths are correct if you place them in a subfolder
+st.title("Bank Customer Churn Prediction")
+
+# --- Let the user choose the model ---
+model_choice = st.sidebar.selectbox("Choose a Model", ["ANN", "SVM", "KNN"])
+
+# --- Load the selected model and the preprocessor ---
 try:
-    model = joblib.load('knn_churn_model.joblib')
-    preprocessor = joblib.load('preprocessor.joblib')
+    if model_choice == "ANN":
+        model = joblib.load('saved_models/ann_model.joblib')
+    elif model_choice == "SVM":
+        model = joblib.load('saved_models/svm_model.joblib')
+    else: # Default to KNN
+        model = joblib.load('saved_models/knn_model.joblib')
+    
+    preprocessor = joblib.load('saved_models/preprocessor.joblib')
+
 except FileNotFoundError:
-    st.error("Model or preprocessor file not found. Please make sure 'knn_churn_model.joblib' and 'preprocessor.joblib' are in the same directory.")
+    st.error("Model or preprocessor file not found. Make sure the 'saved_models' directory is present.")
     st.stop()
 
 # --- Streamlit App Interface ---
