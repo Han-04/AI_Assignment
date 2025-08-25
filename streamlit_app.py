@@ -9,7 +9,7 @@ model_choice = st.sidebar.selectbox("Choose a Model", ["ANN", "SVM", "KNN"])
 # --- Load the selected model and the preprocessor ---
 try:
     if model_choice == "ANN":
-        model = load_model('ann_churn_model.h5')
+        model = load_model('ann_model.keras')
     elif model_choice == "SVM":
         model = joblib.load('svm_churn_model.joblib')
     else: # Default to KNN
